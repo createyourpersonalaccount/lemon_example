@@ -1,0 +1,31 @@
+* A Lemon and re2c example
+
+This is a simple (infix notation) calculator. For example:
+
+#+begin_src
+  cmake -S . -B build && cmake --build build
+  ./build/src/calc2
+  calc> 1 + (2 + 3) * 4
+  Result=21
+#+end_src
+
+The project shows how to use CMake with [[https://re2c.org/][re2c]], [[https://sqlite.org/lemon.html][Lemon]], and finally how to combine them together.
+
+Before I dive into the details, I want to clarify a couple of things that I myself found confusing:
+
+- Both re2c and lemon have *no headers to include nor any libraries to link against*; they are programs that process your source code and produce new source code that is complete, i.e. ready to be compiled with no other dependencies.
+- re2c appears to be able to parse (e.g. via its so-called "actions"), so what is the difference between a "parser" and re2c? The answer is that in re2c we cannot define recursive definitions (and some other such features such as backtracking are missing.) Hence we cannot write in re2c a complete parser for a calculator expression because it is recursive in nature. We can certainly scan tokens from it, in linear time!
+
+Now for the details of this project:
+
+To execute custom commands in a CMake project, such as ~re2c~ and ~lemon~, we must use ~add_custom_command()~. I provide two functions, ~re2c_compile~ and ~lemon_compile~ that will invoke re2c and lemon on the given source file. Their main purpose is to ensure that the files end up in the build directory that CMake calls ~$CMAKE_CURRENT_BINARY_DIR~.
+
+There are many ways to to combine ~re2c~ and ~lemon~. In this project, we have one single file, i.e. see ~calc2.c~, that contains both the lemon and the re2c code. We first run lemon and then re2c over it, before we compile it with a C compiler. Another approach is to create separate translation units that are later linked together, or even separate libraries. 
+
+There are three source files under ~src/~:
+
+- ~scan_string_list.c~ demonstrates how to use re2c.
+- ~calc.y~ demonstrates how to write a Lemon parser for a calculator, and how to use the ~Parse()~ function to pass tokens to the parser engine.
+- ~calc2.y~ is the complete example of the calculator above.
+
+The Lemon calculator is adapted from the example in <https://souptonuts.sourceforge.net/readme_lemon_tutorial.html>.
