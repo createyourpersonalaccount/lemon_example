@@ -1,4 +1,4 @@
-%token_type {int}
+%token_type {long}
 
 %left PLUS MINUS.
 %left DIVIDE TIMES.
@@ -33,7 +33,7 @@ expr(A) ::= LPAR expr(B) RPAR. { A = B; }
   void lex(void *parser, const char *str) {
     const char *YYCURSOR = str;
     const char *b;
-    int n;
+    long n;
     /*!stags:re2c format = 'const char *@@;\n'; */
     for (;;) {
       /*!re2c
@@ -50,7 +50,7 @@ expr(A) ::= LPAR expr(B) RPAR. { A = B; }
         div = "/";
 
         * { Parse(parser, 0, 0); return; }
-        @b number { n = (int)strtol(b, NULL, 10); Parse(parser, INTEGER, n); continue; }
+        @b number { n = strtol(b, NULL, 10); Parse(parser, INTEGER, n); continue; }
         lpar { Parse(parser, LPAR, 0); continue; }
         rpar { Parse(parser, RPAR, 0); continue; }
         plus { Parse(parser, PLUS, 0); continue; }
