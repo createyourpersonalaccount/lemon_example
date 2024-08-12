@@ -41,7 +41,9 @@ expr(A) ::= LPAR expr(B) RPAR. { A = B; }
         re2c:yyfill:enable = 0;
         re2c:tags = 1;
 
-        number = ([-] | [+])?[1-9][0-9]*;
+        zero = [0];
+        positive = [1-9][0-9]*;
+        number = ([-] | [+])? (zero | positive);
         lpar = "(";
         rpar = ")";
         minus = "-";
