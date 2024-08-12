@@ -65,6 +65,9 @@ expr(A) ::= LPAR expr(B) RPAR. { A = B; }
   int main(void) {
     char *line;
     void* parser = ParseAlloc (malloc);
+#ifndef NDEBUG
+    ParseTrace(stdout, "DEBUG> ");
+#endif
     while((line = readline("calc> ")) != NULL) {
       lex(parser, line);
       free(line);

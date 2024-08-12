@@ -3,7 +3,7 @@
 This is a simple (infix notation) calculator. For example:
 
 #+begin_src
-  cmake -S . -B build && cmake --build build
+  cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build
   ./build/src/calc2
   calc> 1 + (2 + 3) * 4
   Result=21
@@ -29,3 +29,11 @@ There are three source files under ~src/~:
 - ~calc2.y~ is the complete example of the calculator above.
 
 The Lemon calculator is adapted from the example in <https://souptonuts.sourceforge.net/readme_lemon_tutorial.html>.
+
+** Debugging
+
+Both the lemon parser and re2c scanner have their own options for debugging, but for lemon in particular we enable ~ParseTrace()~ when ~NDEBUG~ is not defined. This is the case for example in defualt Debug builds in CMake; this is controlled by ~-DCMAKE_BUILD_TYPE=Release~ and ~-DCMAKE_BUILD_TYPE=Debug~.
+
+** The calculator is feature-incomplete
+
+The calculator requires numbers to be separated by whitespace. For example, ~1+2~ won't parse correctly because ~+2~ is treated as a number. My scanning and parsing specifications can be improved to avoid this. Furthermore, ~1+2 + 3~ will result in ~4~ as an answer, because after a syntax error is encountered by the parser in ~+2~, it will discard ~+2~, and then the scanner will continue feeding tokens. To avoid this issue, you would want in the fourth argument of ~Parse()~, turned on by lemon's [[https://sqlite.org/src/doc/trunk/doc/lemon.html#extraarg][%extra_argument]] directive, to keep some scanning & parsing state, that may inform the scanner of a parser error, so that the scanner can inform the user of the error, where it occurred, and so on.
