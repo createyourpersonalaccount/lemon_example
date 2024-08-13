@@ -24,15 +24,15 @@ There are many ways to to combine ~re2c~ and ~lemon~. In this project, we have o
 
 There are three source files under ~src/~:
 
-- ~scan_string_list.c~ demonstrates how to use re2c.
-- ~calc.y~ demonstrates how to write a Lemon parser for a calculator, and how to use the ~Parse()~ function to pass tokens to the parser engine.
-- ~calc2.y~ is the complete example of the calculator above.
+- ~scan_string_list.c~ demonstrates how to use re2c. *It does not use lemon.*
+- ~calc.y~ demonstrates how to write a Lemon parser for a calculator, and how to use the ~Parse()~ function to pass tokens to the parser engine. *It does not use re2c*.
+- ~calc2.y~ is the complete example of the calculator above. *Combines lemon with re2c*.
 
 The Lemon calculator is adapted from the example in <https://souptonuts.sourceforge.net/readme_lemon_tutorial.html>.
 
 ** Debugging
 
-Both the lemon parser and re2c scanner have their own options for debugging, but for lemon in particular we enable ~ParseTrace()~ when ~NDEBUG~ is not defined. This is the case for example in defualt Debug builds in CMake; this is controlled by ~-DCMAKE_BUILD_TYPE=Release~ and ~-DCMAKE_BUILD_TYPE=Debug~.
+Both the lemon parser and re2c scanner have their own options for debugging, but for lemon in particular we enable ~ParseTrace()~ when ~NDEBUG~ is not defined. This is the case for example in default Debug builds in CMake; this is controlled by ~-DCMAKE_BUILD_TYPE=Release~ and ~-DCMAKE_BUILD_TYPE=Debug~.
 
 ** The calculator is feature-incomplete
 
