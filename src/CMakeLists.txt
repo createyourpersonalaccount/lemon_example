@@ -9,7 +9,6 @@ lemon_compile(calc.y)
 add_executable(calc "${CMAKE_CURRENT_BINARY_DIR}/calc.c")
 target_include_directories(calc
   PUBLIC
-  "${CMAKE_CURRENT_SOURCE_DIR}/include"
   "${CMAKE_CURRENT_BINARY_DIR}"
 )
 
@@ -20,7 +19,6 @@ re2c_compile(calc2.c FROM_LEMON OPTIONS --no-debug-info --case-ranges)
 add_executable(calc2 "${CMAKE_CURRENT_BINARY_DIR}/calc2.re.c")
 target_include_directories(calc2
   PUBLIC
-  "${CMAKE_CURRENT_SOURCE_DIR}/include"
   "${CMAKE_CURRENT_BINARY_DIR}"
 )
 target_link_libraries(calc2 readline)
